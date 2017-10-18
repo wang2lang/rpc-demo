@@ -20,7 +20,7 @@ http-server-spa dist/shared-variable
 # serve for post-message at localhost:8080
 npm run build:postMessage
 
-http-server-spa dist/post-message // 访问localhost:8080
+http-server-spa dist/post-message
 
 # serve for shared-storage at localhost:8080 and localhost:8080/b.html
 npm run build:sharedStorage

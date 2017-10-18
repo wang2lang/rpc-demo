@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    #control,
+    #container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #container {
+      flex: 1;
+      border: 1px solid #dddddd;
+      margin-left: 12px;
+    }
+
+    #control {
+      width: 200px;
+    }
+
+    .mr12 {
+      margin-right: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="control">
+    <button class="add mr12">add click</button>
+    <button class="reduce">reduce click</button>
+  </div>
+  <div id="container">
+    我是灵魂客户端
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>

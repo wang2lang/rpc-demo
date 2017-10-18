@@ -1,0 +1,26 @@
+{
+  "name": "rpc-demo",
+  "version": "1.0.0",
+  "description": "demos for front-end communications",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "prettier-eslint": "^8.2.1",
+    "webpack": "^3.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:sharedVariable": "webpack --config build/webpack.shared-variable.config.js --display-optimization-bailout",
+    "build:postMessage": "webpack --config build/webpack.post-message.config.js --display-optimization-bailout",
+    "build:sharedStorage": "webpack --config build/webpack.shared-storage.config.js --display-optimization-bailout"
+  },
+  "author": "",
+  "license": "MIT"
+}

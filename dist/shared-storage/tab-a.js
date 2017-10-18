@@ -160,6 +160,7 @@ window.addEventListener('storage', function (event) {
     } else {
       _requests[id].resolve(result);
     }
+    delete _requests[id];
   }
 }, true);
 

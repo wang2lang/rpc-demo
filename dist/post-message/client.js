@@ -137,6 +137,7 @@ window.addEventListener('message', function (event) {
   } else {
     _requests[id].resolve(result);
   }
+  delete _requests[id];
 }, true);
 
 function sendRequest(method, params) {

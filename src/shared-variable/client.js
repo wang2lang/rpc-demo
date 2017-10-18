@@ -11,6 +11,7 @@ window.__send_to_client = (packet) => {
   } else {
     _requests[id].resolve(result)
   }
+  delete _requests[id]
 }
 
 export function sendRequest(method, params) {

@@ -122,6 +122,7 @@ window.__send_to_client = function (packet) {
   } else {
     _requests[id].resolve(result);
   }
+  delete _requests[id];
 };
 
 function sendRequest(method, params) {
@@ -154,6 +155,17 @@ function isString(str) {
 
 function isArray(array) {
   return Object.prototype.toString.call(array) === '[object Array]';
+}
+
+function sendStorageMessage(key, packet) {
+  localStorage.setItem(key, JSON.stringify(packet));
+  setTimeout(function () {
+    localStorage.removeItem(key);
+  }, 0);
+}
+
+function getStorageMessage(event, key) {
+  return event.key === key ? event.newValue ? JSON.parse(event.newValue) : null : null;
 }
 // CONCATENATED MODULE: ./src/utils/rpc.js
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();

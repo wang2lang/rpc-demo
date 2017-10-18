@@ -136,6 +136,17 @@ function isString(str) {
 function isArray(array) {
   return Object.prototype.toString.call(array) === '[object Array]';
 }
+
+function sendStorageMessage(key, packet) {
+  localStorage.setItem(key, JSON.stringify(packet));
+  setTimeout(function () {
+    localStorage.removeItem(key);
+  }, 0);
+}
+
+function getStorageMessage(event, key) {
+  return event.key === key ? event.newValue ? JSON.parse(event.newValue) : null : null;
+}
 // EXTERNAL MODULE: ./src/utils/packet.js + 1 modules
 var utils_packet = __webpack_require__(0);
 

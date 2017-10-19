@@ -5,7 +5,8 @@
       {
         "targets": {
           "browsers": [
-            "last 1 versions"
+            "Chrome 60",
+            "Safari 10.1"
           ]
         },
         "modules": false

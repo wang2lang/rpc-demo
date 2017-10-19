@@ -14,12 +14,12 @@ class Server extends Rpc {
     Object.keys(procedures).forEach(key => {
       this.add(key, procedures[key])
     })
+
+    window.__send_to_server = (packet) => {
+      window.__send_to_client(server.call(packet))
+    }
   }
 }
 
 export const server = new Server()
 server.init(procedures)
-
-window.__send_to_server = (packet) => {
-  window.__send_to_client(server.call(packet))
-}

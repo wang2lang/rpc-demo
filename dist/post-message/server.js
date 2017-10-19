@@ -83,29 +83,29 @@ function generateUUID() {
   return uuid;
 }
 // CONCATENATED MODULE: ./src/utils/packet.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return packet_RequestPacket; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ResponsePacket; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
+class packet_RequestPacket {
+  constructor(method, params) {
+    this.id = generateUUID();
+    this.method = method;
+    this.params = params;
+    this.type = 'request';
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = packet_RequestPacket;
 
-var packet_RequestPacket = function RequestPacket(method, params) {
-  _classCallCheck(this, RequestPacket);
 
-  this.id = generateUUID();
-  this.method = method;
-  this.params = params;
-  this.type = 'request';
-};
+class ResponsePacket {
+  constructor(id, result, error) {
+    this.id = id;
+    this.result = result;
+    this.error = error;
+    this.type = 'response';
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["b"] = ResponsePacket;
 
-var ResponsePacket = function ResponsePacket(id, result, error) {
-  _classCallCheck(this, ResponsePacket);
-
-  this.id = id;
-  this.result = result;
-  this.error = error;
-  this.type = 'response';
-};
 
 /***/ }),
 /* 1 */
@@ -115,8 +115,6 @@ var ResponsePacket = function ResponsePacket(id, result, error) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // CONCATENATED MODULE: ./src/utils/help.js
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 function isUndefined(fn) {
   return typeof fn === 'undefined';
 }
@@ -126,7 +124,7 @@ function isFunction(fn) {
 }
 
 function isObject(obj) {
-  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+  return typeof obj === 'object';
 }
 
 function isString(str) {
@@ -139,7 +137,7 @@ function isArray(array) {
 
 function sendStorageMessage(key, packet) {
   localStorage.setItem(key, JSON.stringify(packet));
-  setTimeout(function () {
+  setTimeout(() => {
     localStorage.removeItem(key);
   }, 0);
 }
@@ -151,45 +149,26 @@ function getStorageMessage(event, key) {
 var utils_packet = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/utils/rpc.js
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
-
-var rpc_Rpc = function () {
-  function Rpc() {
-    _classCallCheck(this, Rpc);
-
+class rpc_Rpc {
+  constructor() {
     this.procedures = {};
   }
 
-  _createClass(Rpc, [{
-    key: 'add',
-    value: function add(key, cb) {
-      this.procedures[key] = cb;
-    }
-  }, {
-    key: 'call',
-    value: function call(packet) {
-      var method = packet.method,
-          params = packet.params,
-          id = packet.id;
+  add(key, cb) {
+    this.procedures[key] = cb;
+  }
 
-      var _params = parse(params);
-      var _method = this.procedures[method];
-      return _method ? new utils_packet["b" /* ResponsePacket */](id, _method.apply(undefined, _toConsumableArray(_params)), null) : new utils_packet["b" /* ResponsePacket */](id, null, 'Cannot find method ' + method + ' in server procedures!');
-    }
-  }]);
+  call(packet) {
+    const { method, params, id } = packet;
+    const _params = parse(params);
+    const _method = this.procedures[method];
+    return _method ? new utils_packet["b" /* ResponsePacket */](id, _method(..._params), null) : new utils_packet["b" /* ResponsePacket */](id, null, `Cannot find method ${method} in server procedures!`);
+  }
 
-  return Rpc;
-}();
-
-/* harmony default export */ var rpc = (rpc_Rpc);
-
+}
 
 function parse(params) {
   return isObject(params) ? Object.values(params) : isArray(params) ? params : [params];
@@ -202,42 +181,33 @@ var _data = {
   token: '91349b0c45a99fc36cf2',
   num: 0
 };
-var $container = document.querySelector('#container');
+const $container = document.querySelector('#container');
 
 /**
  * server procedures
  */
-var procedures = {
-  getToken: function getToken(key) {
+const procedures = {
+  getToken(key) {
     return _data.token;
   },
-  setData: function setData(key, value) {
+  setData(key, value) {
     _data[key] = value;
     return 'set data success!';
   },
-  addNum: function addNum() {
+  addNum() {
     _data.num = _data.num + 1;
-    $container.innerHTML = 'Current Number: ' + _data.num;
+    $container.innerHTML = `Current Number: ${_data.num}`;
     return _data.num;
   },
-  reduceNum: function reduceNum() {
+  reduceNum() {
     _data.num = _data.num - 1;
-    $container.innerHTML = 'Current Number: ' + _data.num;
+    $container.innerHTML = `Current Number: ${_data.num}`;
     return _data.num;
   }
 };
 
 /* harmony default export */ var utils_procedures = (procedures);
 // CONCATENATED MODULE: ./src/post-message/server.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "server", function() { return server; });
-var server__createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function server__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 /**
  * iframe container server
  */
@@ -245,36 +215,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Server = function (_Rpc) {
-  _inherits(Server, _Rpc);
-
-  function Server() {
-    server__classCallCheck(this, Server);
-
-    return _possibleConstructorReturn(this, (Server.__proto__ || Object.getPrototypeOf(Server)).call(this));
+class Server extends rpc_Rpc {
+  constructor() {
+    super();
   }
 
-  server__createClass(Server, [{
-    key: 'init',
-    value: function init(procedures) {
-      var _this2 = this;
+  init(procedures) {
+    Object.keys(procedures).forEach(key => {
+      this.add(key, procedures[key]);
+    });
 
-      Object.keys(procedures).forEach(function (key) {
-        _this2.add(key, procedures[key]);
-      });
-    }
-  }]);
+    window.addEventListener('message', event => {
+      var packet = event.data;
+      event.source.postMessage(server.call(packet), event.origin);
+    });
+  }
+}
 
-  return Server;
-}(rpc);
+const server = new Server();
+/* harmony export (immutable) */ __webpack_exports__["server"] = server;
 
-var server = new Server();
 server.init(utils_procedures);
-
-window.addEventListener('message', function (event) {
-  var packet = event.data;
-  event.source.postMessage(server.call(packet), event.origin);
-});
 
 /***/ })
 /******/ ]);

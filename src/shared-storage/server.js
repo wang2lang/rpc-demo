@@ -15,15 +15,15 @@ class Server extends Rpc {
     Object.keys(procedures).forEach(key => {
       this.add(key, procedures[key])
     })
+
+    window.addEventListener('storage', event => {
+      var packet = getStorageMessage(event, '_rpcServerPacket')
+      if (packet) {
+        sendStorageMessage('_rpcClientPacket', server.call(packet))
+      }
+    })
   }
 }
 
 export const server = new Server()
 server.init(procedures)
-
-window.addEventListener('storage', event => {
-  var packet = getStorageMessage(event, '_rpcServerPacket')
-  if (packet) {
-    sendStorageMessage('_rpcClientPacket', server.call(packet))
-  }
-})

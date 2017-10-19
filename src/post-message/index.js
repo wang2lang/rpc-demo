@@ -4,16 +4,14 @@ const $addControl = document.querySelector('#control > .add')
 const $reduceControl = document.querySelector('#control > .reduce')
 
 function init() {
-  $addControl.addEventListener('click', function () {
-    sendRequest('addNum').then(res => {
-      console.info(res)
-    })
+  $addControl.addEventListener('click', async function () {
+    var res = await sendRequest('addNum')
+    console.log(res)
   })
 
-  $reduceControl.addEventListener('click', () => {
-    sendRequest('reduceNum').then(res => {
-      console.info(res)
-    })
+  $reduceControl.addEventListener('click', async function () {
+    var res = await sendRequest('reduceNum')
+    console.info(res)
   })
 }
 

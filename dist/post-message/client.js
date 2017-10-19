@@ -83,29 +83,29 @@ function generateUUID() {
   return uuid;
 }
 // CONCATENATED MODULE: ./src/utils/packet.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return packet_RequestPacket; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ResponsePacket; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
+class packet_RequestPacket {
+  constructor(method, params) {
+    this.id = generateUUID();
+    this.method = method;
+    this.params = params;
+    this.type = 'request';
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = packet_RequestPacket;
 
-var packet_RequestPacket = function RequestPacket(method, params) {
-  _classCallCheck(this, RequestPacket);
 
-  this.id = generateUUID();
-  this.method = method;
-  this.params = params;
-  this.type = 'request';
-};
+class ResponsePacket {
+  constructor(id, result, error) {
+    this.id = id;
+    this.result = result;
+    this.error = error;
+    this.type = 'response';
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["b"] = ResponsePacket;
 
-var ResponsePacket = function ResponsePacket(id, result, error) {
-  _classCallCheck(this, ResponsePacket);
-
-  this.id = id;
-  this.result = result;
-  this.error = error;
-  this.type = 'response';
-};
 
 /***/ }),
 /* 1 */,
@@ -124,14 +124,10 @@ var utils_packet = __webpack_require__(0);
  */
 
 var _requests = {};
-var iframeWindow = document.querySelector('#iframe').contentWindow;
+const iframeWindow = document.querySelector('#iframe').contentWindow;
 
 window.addEventListener('message', function (event) {
-  var _event$data = event.data,
-      result = _event$data.result,
-      error = _event$data.error,
-      id = _event$data.id;
-
+  const { result, error, id } = event.data;
   if (error) {
     _requests[id].reject(error);
   } else {
@@ -141,31 +137,28 @@ window.addEventListener('message', function (event) {
 }, true);
 
 function sendRequest(method, params) {
-  var packet = new utils_packet["a" /* RequestPacket */](method, params);
-  var id = packet.id;
-
+  const packet = new utils_packet["a" /* RequestPacket */](method, params);
+  const { id } = packet;
   return new Promise(function (resolve, reject) {
     iframeWindow.postMessage(packet, '*');
-    _requests[id] = { resolve: resolve, reject: reject };
+    _requests[id] = { resolve, reject };
   });
 }
 // CONCATENATED MODULE: ./src/post-message/index.js
 
 
-var $addControl = document.querySelector('#control > .add');
-var $reduceControl = document.querySelector('#control > .reduce');
+const $addControl = document.querySelector('#control > .add');
+const $reduceControl = document.querySelector('#control > .reduce');
 
 function init() {
-  $addControl.addEventListener('click', function () {
-    sendRequest('addNum').then(function (res) {
-      console.info(res);
-    });
+  $addControl.addEventListener('click', async function () {
+    var res = await sendRequest('addNum');
+    console.log(res);
   });
 
-  $reduceControl.addEventListener('click', function () {
-    sendRequest('reduceNum').then(function (res) {
-      console.info(res);
-    });
+  $reduceControl.addEventListener('click', async function () {
+    var res = await sendRequest('reduceNum');
+    console.info(res);
   });
 }
 
